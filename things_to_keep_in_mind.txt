@@ -1,0 +1,20 @@
+usually like this, onmount and onDestroy important.
+<script>
+	import { onMount, onDestroy } from 'svelte';
+
+	let container;
+	let instance;
+
+	onMount(async () => {
+		// 1. Safe Zone: The browser screen is ready and open!
+		const Module = await import('heavy-browser-library');
+		instance = new Module.Engine({ target: container });
+	});
+
+	onDestroy(() => {
+		// 2. Cleanup: Wipe memory trace before leaving the view!
+		if (instance) instance.destroyOrRemove();
+	});
+</script>
+
+<div bind:this={container}></div>
