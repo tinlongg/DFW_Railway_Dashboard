@@ -1,4 +1,4 @@
-usually like this, onmount and onDestroy important.
+usually like this, onmount and onDestroy important. (needed)
 <script>
 	import { onMount, onDestroy } from 'svelte';
 
