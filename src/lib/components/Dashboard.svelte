@@ -32,11 +32,11 @@
 
 <main class="h-screen flex flex-col w-screen overflow-hidden bg-[#b7ccef] rounded-3xl">
 
-<!-- this is the top-->
+<!-- this is the top/nav bar-->
 <header class="flex h-16 w-full items-center justify-between px-6 text-white" dir="rtl">
     <button 
     disabled = {isDisabled}
-    class="rounded p-1 transition hover:bg-white-10"
+    class="rounded p-1 transition hover:bg-white-10 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
     onmouseenter={() => (isHovered = true)}
     onmouseleave={() => (isHovered = false)}
     onclick={loadtime}
@@ -51,6 +51,10 @@
         {/if}
         <!-- <a href="https://www.flaticon.com/free-icons/moon" title="moon icons">Moon icons created by Good Ware - Flaticon</a> -->
     </button>
+
+    <div class="flex items-right justify-end gap-2">
+        <button class="text-black font-semibold text-2xl bg-violet-400 rounded-4xl p-3">Stand out Statistics</button>
+    </div>
 
     <div class="flex w-175 items-center">
         <h1 class="text-3xl text-black ">Food & Transportation Access Map</h1>
@@ -67,7 +71,7 @@
 
         </nav>
         <div class="absolute bottom-5 text-2xl bg-violet-500 hover:bg-violet-600 rounded-4xl p-3 ">
-        <button onclick={() => (showModal = true)}> About </button>
+        <button onclick={() => (showModal = true)}> About / Sources </button>
         <About bind:showModal>
         	{#snippet header()}
                 <h2>hello world</h2>

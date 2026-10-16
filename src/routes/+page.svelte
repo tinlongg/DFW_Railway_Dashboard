@@ -2,7 +2,7 @@
 <p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p> -->
 
 <script>
-    import Map from '#lib/components/Map.svelte';
+    
     import Dashboard from '#lib/components/Dashboard.svelte';
 </script>
 
