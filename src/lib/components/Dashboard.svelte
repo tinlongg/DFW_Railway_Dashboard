@@ -9,6 +9,7 @@
     let isDark = $state(false);
     let isDisabled = $state(false);
     let showModal = $state(false);
+    let showStatModal = $state(false)
 
     function toggleMode(){
         isDark = !isDark;
@@ -24,7 +25,7 @@
         
         setTimeout(() => {
             isDisabled = false;
-        }, 4500);
+        }, 3500);
         toggleMode()
     }
 
@@ -36,7 +37,7 @@
 <header class="flex h-16 w-full items-center justify-between px-6 text-white" dir="rtl">
     <button 
     disabled = {isDisabled}
-    class="rounded p-1 transition hover:bg-white-10 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+    class="rounded p-1 transition hover:bg-white-10 cursor-pointer disabled:cursor-not-allowed disabled:opacity-75"
     onmouseenter={() => (isHovered = true)}
     onmouseleave={() => (isHovered = false)}
     onclick={loadtime}
@@ -53,7 +54,16 @@
     </button>
 
     <div class="flex items-right justify-end gap-2">
-        <button class="text-black font-semibold text-2xl bg-violet-400 rounded-4xl p-3">Stand out Statistics</button>
+        <button class="text-black font-semibold text-2xl bg-violet-400 rounded-4xl p-3 hover:cursor-pointer" onclick={() => (showStatModal = true)}>Stand out Statistics</button>
+        <About bind:showModal = {showStatModal}>
+        	{#snippet header()}
+                <h2>helrld</h2>
+            {/snippet}
+
+            <ol>
+                <h1>hello world</h1>
+            </ol>
+        </About>
     </div>
 
     <div class="flex w-175 items-center">
@@ -71,7 +81,7 @@
 
         </nav>
         <div class="absolute bottom-5 text-2xl bg-violet-500 hover:bg-violet-600 rounded-4xl p-3 ">
-        <button onclick={() => (showModal = true)}> About / Sources </button>
+        <button class="hover:cursor-pointer" onclick={() => (showModal = true)}> About / Sources </button>
         <About bind:showModal>
         	{#snippet header()}
                 <h2>hello world</h2>

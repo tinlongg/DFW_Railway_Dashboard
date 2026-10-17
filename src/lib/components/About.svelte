@@ -17,7 +17,7 @@
 
         {@render children?.()}
 		<!-- svelte-ignore a11y_autofocus -->
-        <button autofocus onclick={() => dialog.close()}>close modal</button>
+        <button class="hover:cursor-pointer" autofocus onclick={() => dialog.close()}>close modal</button>
     </div>
 </dialog>
 
