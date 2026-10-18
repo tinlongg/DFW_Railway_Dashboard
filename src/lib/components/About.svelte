@@ -11,7 +11,7 @@
     bind:this={dialog}
     onclose={() => (showModal = false)}
     onclick={(e) => {if (e.target === dialog) dialog.close();}}
->
+	>
     <div>
         {@render header?.()}
 
@@ -37,7 +37,7 @@
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
 	}
-	dialog > div {
+	dialog> div {
 		padding: 1em;
 	}
 	dialog[open] {
