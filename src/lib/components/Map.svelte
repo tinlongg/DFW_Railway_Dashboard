@@ -99,7 +99,11 @@
 		if (!map.getSource('dfw_station')) {
 			map.addSource('dfw_station', {
 				type: 'geojson',
-				data: 'https://services1.arcgis.com/qr14biwnHA6Vis6l/arcgis/rest/services/Stations_name2/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson'
+				data: 'https://services1.arcgis.com/qr14biwnHA6Vis6l/arcgis/rest/services/Stations_name2/FeatureServer/0/query?where=1%3D1&outFields=*&f=geojson',
+				// Group stations that sit close together until you zoom in
+				cluster: true,
+				clusterRadius: 20,
+				clusterMaxZoom: 15
 			});
 		}
 		if (!map.getSource('dfw-distance')) {
@@ -166,19 +170,54 @@
 				paint: { 'line-color': isDark ? '#50BFDC' : '#39355F', 'line-width': 2.5 }
 			});
 		}
+		if (!map.getLayer('station-cluster')) {
+			map.addLayer({
+				id: 'station-cluster',
+				type: 'circle',
+				source: 'dfw_station',
+				filter: ['has', 'point_count'],
+				layout: { visibility: showStations ? 'visible' : 'none' },
+				paint: {
+					'circle-color': isDark ? '#E9E3D8' : '#5B12ED',
+					'circle-radius': ['step', ['get', 'point_count'], 11, 5, 14, 10, 17],
+					'circle-stroke-color': isDark ? '#121829' : '#ffffff',
+					'circle-stroke-width': 2
+				}
+			});
+		}
+		if (!map.getLayer('station-cluster-count')) {
+			map.addLayer({
+				id: 'station-cluster-count',
+				type: 'symbol',
+				source: 'dfw_station',
+				filter: ['has', 'point_count'],
+				layout: {
+					visibility: showStations ? 'visible' : 'none',
+					'text-field': ['get', 'point_count_abbreviated'],
+					'text-font': ['Noto Sans Bold'],
+					'text-size': 12,
+					'text-allow-overlap': true
+				},
+				paint: { 'text-color': isDark ? '#121829' : '#ffffff' }
+			});
+		}
 		if (!map.getLayer('station-name')) {
 			map.addLayer({
 				id: 'station-name',
 				type: 'symbol',
 				source: 'dfw_station',
+				filter: ['!', ['has', 'point_count']],
 				layout: {
 					'icon-image': 'trainMarker',
-					'icon-size': 0.08,
+					// Small at the regional view, full size once zoomed into a neighborhood
+					'icon-size': ['interpolate', ['linear'], ['zoom'], 9, 0.045, 12, 0.065, 15, 0.09],
 					'icon-allow-overlap': true,
 					'icon-ignore-placement': true,
 					visibility: showStations ? 'visible' : 'none'
 				},
-				paint: { 'icon-color': isDark ? '#E9E3D8' : '#5B12ED' }
+				paint: {
+					'icon-color': isDark ? '#E9E3D8' : '#5B12ED'
+				}
 			});
 		}
 
@@ -215,6 +254,15 @@
 				.addTo(map);
 		});
 
+		map.on('click', 'station-cluster', async (e) => {
+			e.originalEvent._handled = true;
+			const feature = e.features[0];
+			const zoom = await map
+				.getSource('dfw_station')
+				.getClusterExpansionZoom(feature.properties.cluster_id);
+			map.easeTo({ center: feature.geometry.coordinates, zoom: zoom + 0.5 });
+		});
+
 		map.on('click', 'tract-poly', (e) => {
 			if (e.originalEvent._handled) return;
 			const props = e.features[0].properties;
@@ -236,7 +284,7 @@
 				.addTo(map);
 		});
 
-		const interLayers = ['station-name', 'tract-poly'];
+		const interLayers = ['station-name', 'station-cluster', 'tract-poly'];
 		map.on('mouseenter', interLayers, () => (map.getCanvas().style.cursor = 'pointer'));
 		map.on('mouseleave', interLayers, () => (map.getCanvas().style.cursor = ''));
 	}
@@ -299,6 +347,8 @@
 			toggleLayers('tract-poly', tracts);
 			toggleLayers('railway-lines', rails);
 			toggleLayers('station-name', stations);
+			toggleLayers('station-cluster', stations);
+			toggleLayers('station-cluster-count', stations);
 			toggleLayers('lila-fill', food);
 			toggleLayers('lila-outline', food);
 			// A selected tract keeps its route line visible regardless of the toggle

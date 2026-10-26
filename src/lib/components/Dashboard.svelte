@@ -8,6 +8,9 @@
 
 	let isDark = $state(false);
 	let isDisabled = $state(false);
+	let isHovered = $state(false);
+	// Filled moon = dark mode is on; hovering previews the other state
+	let moonFilled = $derived(isDark !== isHovered);
 
 	let showModal = $state(false);
 	let showStatModal = $state(false);
@@ -92,12 +95,12 @@
 			<button
 				class="{navBtn} {showStatModal ? navOn : navOff}"
 				aria-pressed={showStatModal}
-				onclick={() => (showStatModal = true)}>Stand out statistics</button
+				onclick={() => (showStatModal = true)}>Stand Out Statistics</button
 			>
 			<button
 				class="{navBtn} {showModal ? navOn : navOff}"
 				aria-pressed={showModal}
-				onclick={() => (showModal = true)}>About & sources</button
+				onclick={() => (showModal = true)}>About</button
 			>
 			<button
 				disabled={isDisabled}
@@ -105,11 +108,13 @@
 				aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
 				title={isDark ? 'Light mode' : 'Dark mode'}
 				onclick={toggleTheme}
+				onmouseenter={() => (isHovered = true)}
+				onmouseleave={() => (isHovered = false)}
 			>
 				{#if isDisabled}
 					<span class="h-4 w-4 animate-spin rounded-full border-2 border-(--muted) border-t-transparent"></span>
 				{:else}
-					<img class="h-5 w-5" src={isDark ? lightMode : darkMode} alt="" />
+					<img class="h-5 w-5 transition {isDark ? 'invert' : ''}" src={moonFilled ? darkMode : lightMode} alt="" />
 				{/if}
 			</button>
 		</div>
@@ -301,9 +306,17 @@
 
 	<div class="space-y-4 text-sm leading-relaxed">
 		<p>
-			This map looks at where getting groceries is hardest in Dallas–Fort Worth: neighborhoods that are far
-			from a grocery store <em>and</em> where many households don't own a car, and how close those
-			neighborhoods are to rail transit.
+			In Texas, getting to the grocery store usually means getting in a car. For households that don't have one,
+			every trip for food depends on transit, a ride from someone else, or a long walk. Dallas has the most
+			extensive rail system in Texas, but living near a train line doesn't guarantee being able to reach a
+			supermarket. Food insecurity is already widespread here: Feeding America estimates that 19.2% of Dallas
+			County residents, about 503,000 people, were food insecure in 2024, including more than 1 in 4 children.
+			Transportation is a large part of that picture. A nationally representative survey found that 19% of U.S.
+			adults experienced transportation insecurity, more than reported food insecurity, and that the two
+			hardships often go together, while recent research links access to public transit directly to food
+			insecurity. This map shows where households without a vehicle are concentrated across DFW, how far those
+			neighborhoods are from a rail station, and whether they are food deserts, to ask a simple question: for
+			families without a car, does the rail system actually get them to the grocery store?
 		</p>
 		<dl class="space-y-2">
 			<div><dt class="font-bold">Food deserts</dt><dd class="text-(--muted)">USDA low-income, low-access tracts: at least 1 mile from a supermarket in urban areas, or 10 miles in rural areas.</dd></div>
@@ -314,6 +327,10 @@
 
 		<h3 class="pt-1 text-xs font-bold tracking-wider text-(--muted) uppercase">Sources</h3>
 		<ul class="space-y-1.5 [&_a]:font-semibold [&_a]:text-(--accent) [&_a:hover]:underline">
+			<li>Feeding America, <a href="https://map.feedingamerica.org/county/2021/overall/texas/county/dallas" target="_blank" rel="noopener">Map the Meal Gap</a> (2024 data): Dallas County food insecurity rates.</li>
+			<li>Arnold (2025), <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/jors.70010" target="_blank" rel="noopener">"Public Transportation Access and Food Insecurity"</a>, <i>Journal of Regional Science</i>.</li>
+			<li>U.S. Hunger (2022), <a href="https://ushunger.org/blog/transportation-food-insecurity/" target="_blank" rel="noopener">Transportation and food insecurity</a>.</li>
+			<li>Mcity, University of Michigan (2025), <a href="https://mcity.umich.edu/lack-of-regular-transportation-as-great-a-hardship-as-reliable-access-to-food-medical-care-housing-and-more/" target="_blank" rel="noopener">Lack of regular transportation as great a hardship as food, medical care and housing</a>.</li>
 			<li>U.S. Census Bureau, American Community Survey 5-year estimates: B08201 (vehicles available) and B19049 (median household income).</li>
 			<li>USDA Economic Research Service, <a href="https://www.ers.usda.gov/data-products/food-access-research-atlas/" target="_blank" rel="noopener">Food Access Research Atlas</a>.</li>
 			<li>USDA Food and Nutrition Service, <a href="https://www.fns.usda.gov/snap/retailer/data" target="_blank" rel="noopener">SNAP Retailer Locator data</a> (2025). Used instead of the general store dataset, which was last updated in 2019, before COVID.</li>
