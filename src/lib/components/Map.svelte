@@ -18,7 +18,7 @@
 	let mapContainer;
 	let map = $state();
 
-	const HOME = { center: [-97.0377, 32.7802], zoom: 9.75, pitch: 0, bearing: 0 };
+	const HOME = { center: [-97.0377, 32.7802], zoom: 9.67, pitch: 0, bearing: 0 };
 
 	function resetView() {
 		map?.flyTo({ ...HOME, duration: 1200, essential: true });
