@@ -1,14 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+@theme {
+	--font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
 }
 
-/* 2. Target Svelte 5's modern dynamic container generation */
+html,
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+}
+
 body > div {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
+}
+
+/* Dashboard theme tokens */
+.theme-light {
+	--bg: #eceff7;
+	--panel: #ffffff;
+	--panel-2: #f4f5fa;
+	--text: #0f172a;
+	--muted: #64748b;
+	--border: #e3e7f0;
+	--accent: #7c3aed;
+	--accent-strong: #6d28d9;
+	--accent-soft: #efe9ff;
+	--shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px rgb(15 23 42 / 0.06);
+}
+.theme-dark {
+	--bg: #0a0e1a;
+	--panel: #121829;
+	--panel-2: #1a2236;
+	--text: #e6e9f2;
+	--muted: #8b95ad;
+	--border: #242d45;
+	--accent: #a78bfa;
+	--accent-strong: #c4b5fd;
+	--accent-soft: #2a2350;
+	--shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.35);
+}
+
+/* Slider */
+.range {
+	-webkit-appearance: none;
+	appearance: none;
+	height: 6px;
+	border-radius: 999px;
+	background: linear-gradient(
+		to right,
+		var(--accent) 0%,
+		var(--accent) var(--fill, 0%),
+		var(--border) var(--fill, 0%),
+		var(--border) 100%
+	);
+	outline: none;
+}
+.range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 18px;
+	height: 18px;
+	border-radius: 999px;
+	background: var(--panel);
+	border: 3px solid var(--accent);
+	box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
+	cursor: pointer;
+	transition: transform 0.15s;
+}
+.range::-webkit-slider-thumb:hover {
+	transform: scale(1.15);
+}
+.range::-moz-range-thumb {
+	width: 14px;
+	height: 14px;
+	border-radius: 999px;
+	background: var(--panel);
+	border: 3px solid var(--accent);
+	cursor: pointer;
+}
+
+/* MapLibre popups to match the dashboard */
+.maplibregl-popup-content {
+	border-radius: 14px !important;
+	padding: 12px 14px !important;
+	box-shadow: 0 10px 30px rgb(15 23 42 / 0.18) !important;
+	font-family: var(--font-sans);
+}
+.maplibregl-popup-content {
+	background: var(--panel) !important;
+	color: var(--text);
+	border: 1px solid var(--border);
+}
+.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+	border-bottom-color: var(--panel) !important;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+	border-top-color: var(--panel) !important;
+}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+	border-right-color: var(--panel) !important;
+}
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+	border-left-color: var(--panel) !important;
+}
+.maplibregl-popup-close-button:hover {
+	background: var(--panel-2);
+	color: var(--text);
+}
+.maplibregl-popup-close-button {
+	font-size: 18px;
+	padding: 2px 8px;
+	color: #94a3b8;
 }
