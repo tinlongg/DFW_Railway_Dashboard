@@ -37,31 +37,14 @@ data hosted on ArcGIS Online
 
 ## Run it locally
 
-Requires Node.js 20.19+ or 22.12+ (what Vite needs).
+Requires Node.js 20.19+ or 22.12+.
 
 ```sh
 npm install
 npm run dev
 ```
 
-Then open http://localhost:5173. No API keys or environment variables are needed: all data comes
-from public ArcGIS feature services.
-
-## Project structure
-
-```
-src/
-├── lib/
-│   ├── components/
-│   │   ├── Dashboard.svelte   
-│   │   ├── Map.svelte         
-│   │   └── About.svelte       
-│   └── stats.js               
-└── routes/
-    ├── +page.svelte
-    └── layout.css            
-static/                        
-```
+Then open http://localhost:5173. 
 
 ## Data
 
